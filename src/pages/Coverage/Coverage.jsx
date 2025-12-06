@@ -6,11 +6,10 @@ import { useLoaderData} from 'react-router';
 
 const Coverage = () => {
     const position = [23.6850, 90.3563];
-
     const serviceCenters = useLoaderData() || [];
-
-  
     console.log (serviceCenters);
+
+    
     return (
         <div>
             <div>
