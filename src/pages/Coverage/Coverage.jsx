@@ -9,19 +9,19 @@ const Coverage = () => {
     const serviceCenters = useLoaderData() || [];
 
     return (
-        <div className="pt-24 z-10">   {/* FIXED: navbar overlap solved */}
+        <div className="relative pt-24">
             <div>
                 <h1>We are available all over Bangladesh</h1>
             </div>
 
             <div>search</div>
 
-            <div className='border w-full h-[800px]'>
+            <div className='border w-full h-[800px] relative z-0'>
                 <MapContainer 
                     center={position}
                     zoom={8}
                     scrollWheelZoom={false}
-                    className='h-[800px]'
+                    className='h-[800px] z-0'
                 >
                     <TileLayer
                         attribution='&copy;OpenStreetMap'
