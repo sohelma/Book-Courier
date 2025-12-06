@@ -3,7 +3,8 @@ import Logo from '../../components/logo/logo';
 
 const Footer = () => {
     return (
-    <footer className="footer sm:footer-horizontal bg-sky-200 clear text-base-content p-10">
+    <footer className="footer sm:footer-horizontal bg-sky-300 clear text-base-content p-10
+    mt-4">
   <nav>
     <h6 className="footer-title">Services</h6>
     <a className="link link-hover">Branding</a>
@@ -20,7 +21,7 @@ const Footer = () => {
   </nav>
   <nav>
     <h6 className="footer-title">Social</h6>
-    <div className="grid grid-flow-col gap-4">
+    <div className="grid grid-flow-col gap-4 mb-4">
      <a
     href="https://x.com/yourprofile"
     target="_blank"
