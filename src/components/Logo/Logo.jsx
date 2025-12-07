@@ -1,5 +1,6 @@
+//src/logo/logo.jsx
 import React from 'react';
-import logoImg from '../../assets/logo.png';
+import logoImg from '../../../public/images/logo.png';
 
 // Component name must be Capital (Logo)
 const Logo = () => {

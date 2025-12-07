@@ -1,29 +1,32 @@
-//src/routes/router
+// src/routes/router.jsx
 import { createBrowserRouter } from "react-router";
 import Home from "../pages/Home/Home";
+import Register from "../pages/Register";
+import Login from "../pages/Login";
 import RootLayout from "../layouts/RootLayout";
-import Coverage from "../pages/Coverage/Coverage";
+import ProtectedRoute from "../components/ProtectedRoute";
+
 
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
- Component: RootLayout,
+    Component: RootLayout,
     children: [
-      { index: true,
-        Component:Home},
+      { index: true, Component: Home },
+      { path: "login", Component: Login },
+      { path: "register", Component: Register },
 
-      { path: "coverage",
-        Component:Coverage,
-        loader:()=>fetch('/serviceCenters.json').then (res=>res.json())
-    }
-    ]
-  }
-
-
+      // Dashboard wrapped with ProtectedRoute
+      {
+        path: "dashboard",
+        Component: () => (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
+    ],
+  },
 ]);
-
-
-
-
