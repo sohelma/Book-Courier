@@ -8,21 +8,32 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Coverage from "../pages/Coverage/Coverage";
 import Contact from "../pages/Contact/Contact";
 
-
-
+// Dashboard pages
+import Dashboard from "../pages/Dashboard/Dashboard";
+import DashboardLayout from "../pages/Dashboard/DashboardLayout";
+import MyProfile from "../pages/Dashboard/MyProfile";
+import MyOrders from "../pages/Dashboard/MyOrders";
+import MyWishlist from "../pages/Dashboard/MyWishlist";
+import AddBook from "../pages/Dashboard/AddBook";
+import Overview from "../pages/Dashboard/Overview";
+import Sidebar from "../pages/Dashboard/Sidebar";
+import AllBooks from "../pages/Books/AllBooks";
+import BookDetails from "../pages/Books/BookDetails";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
     children: [
-      { index: true, Component: Home },
+      { index: true, Component: Home }, // Public home page
       { path: "login", Component: Login },
       { path: "register", Component: Register },
+      { path: "books", Component: AllBooks },
       { path: "coverage", Component: Coverage },
-      { path: "Contact", Component: Contact },
-
-      // Dashboard wrapped with ProtectedRoute
+      { path: "contact", Component: Contact },
+      {path: "books/:id",Component: BookDetails},
+    
+      // Dashboard route protected
       {
         path: "dashboard",
         Component: () => (
@@ -30,6 +41,15 @@ export const router = createBrowserRouter([
             <Dashboard />
           </ProtectedRoute>
         ),
+        children: [
+          { index: true, Component: MyProfile }, // Default dashboard page
+          { path: "profile", Component: MyProfile },
+          { path: "orders", Component: MyOrders },
+          { path: "wishlist", Component: MyWishlist },
+          { path: "addbook", Component: AddBook },
+          { path: "overview", Component: Overview },
+          { path: "sidebar", Component: Sidebar },
+        ],
       },
     ],
   },

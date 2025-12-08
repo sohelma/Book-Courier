@@ -1,17 +1,13 @@
-// src/pages/Dashboard/Dashboard.jsx
 import React from "react";
 import { Outlet } from "react-router";
 
 const Dashboard = () => {
-  const userRole = "user"; // example, from Firebase / DB
+  const userRole = "user"; // example
 
   return (
     <div className="min-h-[80vh] p-6 bg-gray-50 dark:bg-gray-900">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-        Dashboard
-      </h1>
-
       <div className="flex flex-col md:flex-row gap-6">
+        {/* Sidebar */}
         <aside className="w-full md:w-64 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
           <ul className="space-y-3">
             <li>
@@ -36,6 +32,7 @@ const Dashboard = () => {
           </ul>
         </aside>
 
+        {/* Main Content */}
         <main className="flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
           <Outlet />
         </main>
