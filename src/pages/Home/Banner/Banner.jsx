@@ -1,36 +1,28 @@
-// src/Home/Banner/Banner.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import { Link } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-
-const slides = [
-  {
-    image: "/images/banner/banner10.jpg",
-    title: "Borrow Your Favorite Books",
-    desc: "Get books delivered from nearby libraries directly to your home.",
-    link: "/books",
-    textPosition: "left",
-  },
-  {
-    image: "/images/banner/banner11.jpg",
-    title: "Explore a World of Knowledge",
-    desc: "Find books from various genres and authors easily.",
-    link: "/books",
-    textPosition: "right",
-  },
-  {
-    image: "/images/banner/banner12.jpg",
-    title: "Easy Library Access",
-    desc: "Request pickup or delivery without visiting the library.",
-    link: "/books",
-    textPosition: "left",
-  },
-];
+import axios from "axios";
 
 const Banner = () => {
+  const [slides, setSlides] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/banners")
+      .then((res) => {
+        const activeSlides = res.data.filter((slide) => slide.isActive);
+        setSlides(activeSlides);
+      })
+      .catch((err) => console.error("Error fetching Banners:", err));
+  }, []);
+
+  if (!slides.length) {
+    return <div className="text-center py-12">Loading Banners...</div>;
+  }
+
   return (
-    <div className="flex justify-center py-12 bg-gray-50 dark:bg-gray-900">
+    <div className="flex justify-center py-12 bg-gray-50 dark:bg-black dark:text-white dark:text-white">
       <div className="w-full md:w-[80%]">
         <Carousel
           infiniteLoop
@@ -38,39 +30,44 @@ const Banner = () => {
           showThumbs={false}
           showStatus={false}
           interval={5000}
-          className="rounded-lg shadow-lg"
+          className="rounded-xl shadow-xl"
         >
-          {slides.map((slide, idx) => (
-            <div key={idx} className="relative">
-              {/* Image */}
-              <img
-                src={slide.image}
-                alt={slide.title}
-                className="object-cover w-full h-[300px] md:h-[400px] rounded-lg"
-              />
+          {slides.map((slide) => (
+            <div key={slide._id} className="flex w-full h-[330px] md:h-[420px] rounded-xl overflow-hidden bg-transparent dark:bg-black dark:text-white">
 
-              {/* Dark overlay for text visibility */}
-              <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
+              {/* LEFT TEXT 40% */}
+              <div className="w-2/5 flex flex-col justify-center p-8 space-y-6">
 
-              {/* Text content */}
-              <div
-                className={`absolute top-1/2 transform -translate-y-1/2 p-6 md:w-1/2 ${
-                  slide.textPosition === "left"
-                    ? "left-0 md:left-6 text-left"
-                    : "right-0 md:right-6 text-right"
-                } z-10`}
-              >
-                <h2 className="text-3xl md:text-4xl font-bold text-indigo-500 mb-4">
+                {/* Modern Title */}
+                <h2 className="text-3xl md:text-4xl font-extrabold leading-tight text-gray-900 dark:text-white tracking-tight drop-shadow-sm">
                   {slide.title}
                 </h2>
-                <p className="text-white text-lg md:text-xl mb-4">{slide.desc}</p>
-                <Link
-                  to={slide.link}
-                  className="px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-lg transition"
-                >
-                  View All Books
-                </Link>
+
+                {/* Modern Description */}
+                <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed opacity-90">
+                  {slide.description}
+                </p>
+
+                {/* Center Button Always */}
+                <div className="flex justify-center md:justify-center">
+                  <Link
+                    to={slide.link}
+                    className="px-6 py-2 text-sm font-semibold bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl transition shadow-lg tracking-wide transform hover:scale-105 duration-200"
+                  >
+                    {slide.buttonText || "View All Books"}
+                  </Link>
+                </div>
               </div>
+
+              {/* RIGHT IMAGE 60% */}
+              <div className="w-3/5 h-full">
+                <img
+                  src={slide.imageUrl}
+                  alt={slide.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
             </div>
           ))}
         </Carousel>

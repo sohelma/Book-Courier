@@ -19,6 +19,7 @@ import Overview from "../pages/Dashboard/Overview";
 import Sidebar from "../pages/Dashboard/Sidebar";
 import AllBooks from "../pages/Books/AllBooks";
 import BookDetails from "../pages/Books/BookDetails";
+import LatestBooks from "../pages/Books/LatestBooks";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
       { path: "coverage", Component: Coverage },
       { path: "contact", Component: Contact },
       {path: "books/:id",Component: BookDetails},
+      { path: "books", Component: LatestBooks },
     
       // Dashboard route protected
       {
