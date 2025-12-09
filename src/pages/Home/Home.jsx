@@ -5,6 +5,7 @@ import Brands from './Brands/Brands';
 import Coverage from '../Coverage/Coverage';
 import AllBooks from '../Books/AllBooks';
 import LatestBooks from '../Books/LatestBooks';
+import WhyChoose from '../Books/WhyChoose';
 
 
 const Home = () => {
@@ -13,7 +14,8 @@ const Home = () => {
         <Banner></Banner> 
         <AllBooks></AllBooks>
         <LatestBooks></LatestBooks>
-        <Brands></Brands>  
+        <Brands></Brands> 
+        <WhyChoose></WhyChoose> 
         <Coverage></Coverage>      
         </div>
     );
