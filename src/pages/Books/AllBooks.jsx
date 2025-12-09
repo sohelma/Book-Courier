@@ -18,7 +18,7 @@ const AllBooks = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6 text-indigo-500">All Books</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">All Books</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {books.map((book) => (
           <div

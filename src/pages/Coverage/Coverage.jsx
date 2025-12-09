@@ -29,7 +29,7 @@ const Coverage = () => {
 
   return (
     <div className="relative pt-24">
-      <h1 className="text-2xl font-semibold mb-4 text-center">We are available all over Bangladesh</h1>
+      <h1 className="text-4xl font-semibold mb-4 text-center">We are available all over Bangladesh</h1>
 
       <div className="border w-full h-[800px] relative z-0">
         <MapContainer
