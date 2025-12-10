@@ -18,40 +18,42 @@ const BookDetails = () => {
   if (!book) return <p className="p-6">Loading...</p>;
 
   return (
-    <div className="p-6 max-w-4xl mx-auto flex gap-6">
+    <div className="p-6 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
 
-      {/* Left Side - Book Image */}
-      <div>
-        <img
-          src={book.imageUrl}
-          alt={book.title}
-          className="w-full h-64 object-cover mb-4 rounded-lg"
-        />
-      </div>
+  {/* Left Side - 50% Image */}
+  <div className="w-full">
+    <img
+      src={book.imageUrl}
+      alt={book.title}
+      className="w-full h-80 object-cover rounded-lg shadow"
+    />
+  </div>
 
-      {/* Right Side - Book Info */}
-      <div>
-        <h1 className="text-3xl font-bold mb-6">{book.title}</h1>
-        <h1 className="text-xl mb-4">{book.description}</h1>
-        <p className="mb-2">Created : {book.createdAt}</p>
-        <p className="mb-8">Order : {book.order}</p>
+  {/* Right Side - 50% Text */}
+  <div className="w-full">
+    <h1 className="text-3xl font-bold mb-6">{book.title}</h1>
+    <p className="text-lg mb-4">{book.description}</p>
+    
+    <p className="mb-2">Created : {book.createdAt}</p>
+    <p className="mb-2">Order : {book.order}</p>
+    <p className="mb-6">Price : {book.price}</p>
 
-        {/* Order Now Button */}
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-5 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700"
-        >
-          Order Now
-        </button>
-      </div>
+    <button
+      onClick={() => setIsModalOpen(true)}
+      className="px-5 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700"
+    >
+      Order Now
+    </button>
+  </div>
 
-      {/* Modal */}
-      <OrderModal
-        visible={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        book={book}
-      />
-    </div>
+  {/* Modal */}
+  <OrderModal
+    visible={isModalOpen}
+    onClose={() => setIsModalOpen(false)}
+    book={book}
+  />
+</div>
+
   );
 };
 
