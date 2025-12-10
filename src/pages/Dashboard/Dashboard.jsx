@@ -25,16 +25,7 @@ const Dashboard = () => {
 
         {/* Main content */}
         <main className="flex-1 p-6 transition-colors duration-300">
-          {/* Dark mode toggle */}
-          <div className="flex justify-end mb-4">
-            <button
-              onClick={() => setIsDark(!isDark)}
-              className="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600"
-            >
-              {isDark ? "Light Mode" : "Dark Mode"}
-            </button>
-          </div>
-
+         
           <Outlet />
         </main>
       </div>
