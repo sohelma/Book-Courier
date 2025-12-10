@@ -87,7 +87,7 @@ const Login = () => {
 
             {/* Eye Icon */}
             <span
-                className="absolute right-4 top-[55%] -translate-y-1/2 
+                className="absolute right-4 top-[69%]-translate
                 cursor-pointer text-gray-600 dark:text-gray-300 text-xl"
                 onClick={() => setShowPassword(!showPassword)} >
                 {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
@@ -120,7 +120,7 @@ const Login = () => {
           onClick={handleGoogleLogin}
           className="w-full flex justify-center items-center gap-2 py-2.5 rounded-lg font-semibold text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <FcGoogle size={20} /> Login with Google
+          <FcGoogle size={22} /> Login with Google
         </button>
 
         {/* Redirect to register */}

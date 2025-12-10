@@ -1,39 +1,40 @@
-import React from "react";
+// src/pages/Dashboard/Dashboard.jsx
+import React, { useState } from "react";
 import { Outlet } from "react-router";
+import Sidebar from "./Sidebar";
 
 const Dashboard = () => {
-  const userRole = "user"; // example
+  const [isDark, setIsDark] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const userRole = "user";
 
   return (
-    <div className="min-h-[80vh] p-6 bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col md:flex-row gap-6">
+    <div className={isDark ? "dark" : ""}>
+      {/* Fixed white background problem solved here */}
+      <div
+        className={`min-h-screen flex transition-colors duration-300 ${
+          isDark ? "bg-gray-900" : "bg-gray-50"
+        }`}
+      >
         {/* Sidebar */}
-        <aside className="w-full md:w-64 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-          <ul className="space-y-3">
-            <li>
-              <a href="/dashboard/profile" className="block text-gray-700 dark:text-gray-200 hover:text-blue-600">
-                My Profile
-              </a>
-            </li>
-            {userRole === "user" && (
-              <>
-                <li>
-                  <a href="/dashboard/orders" className="block text-gray-700 dark:text-gray-200 hover:text-blue-600">
-                    My Orders
-                  </a>
-                </li>
-                <li>
-                  <a href="/dashboard/wishlist" className="block text-gray-700 dark:text-gray-200 hover:text-blue-600">
-                    My Wishlist
-                  </a>
-                </li>
-              </>
-            )}
-          </ul>
-        </aside>
+        <Sidebar
+          collapsed={collapsed}
+          onToggle={() => setCollapsed(!collapsed)}
+          userRole={userRole}
+        />
 
-        {/* Main Content */}
-        <main className="flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        {/* Main content */}
+        <main className="flex-1 p-6 transition-colors duration-300">
+          {/* Dark mode toggle */}
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={() => setIsDark(!isDark)}
+              className="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600"
+            >
+              {isDark ? "Light Mode" : "Dark Mode"}
+            </button>
+          </div>
+
           <Outlet />
         </main>
       </div>

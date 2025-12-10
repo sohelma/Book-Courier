@@ -1,70 +1,67 @@
+// src/pages/Dashboard/Sidebar.jsx
 import React from "react";
-// If you prefer react-router NavLink, you can replace <a> with NavLink
-// import { NavLink } from "react-router-dom";
+import {
+  FaHome,
+  FaBook,
+  FaPlus,
+  FaUser,
+  FaClipboardList,
+  FaUsers,
+} from "react-icons/fa";
 
 const Sidebar = ({ collapsed = false, onToggle }) => {
-  const baseItem = "flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-gray-700 transition";
+  const baseItem =
+    "flex items-center gap-3 px-3 py-2 rounded-lg " +
+    "hover:bg-gray-200 dark:hover:bg-gray-700 " +
+    "text-gray-700 dark:text-gray-200 transition";
 
   return (
-    <div className="h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4">
-      <div className={`flex items-center justify-between mb-6 ${collapsed ? "flex-col" : ""}`}>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-md bg-indigo-500 flex items-center justify-center text-white font-bold">
-            BC
-          </div>
-          {!collapsed && <div className="text-lg font-semibold text-indigo-600">BookCourier</div>}
-        </div>
+    <div
+      className={`${
+        collapsed ? "w-20" : "w-64"
+      } h-screen bg-gray-100 dark:bg-gray-900 
+      border-r border-gray-300 dark:border-gray-700 
+      p-4 flex flex-col justify-between transition-all duration-300 text-gray-900 dark:text-gray-200`}
+    >
+   
 
-        <button
-          onClick={onToggle}
-          className="p-2 rounded-md bg-indigo-100 text-indigo-600 hover:bg-indigo-200"
-          title={collapsed ? "Expand" : "Collapse"}
-        >
-          {collapsed ? "»" : "‹"}
-        </button>
-      </div>
-
+      {/* Navigation */}
       <nav className="space-y-1">
-        <a href="/dashboard" className={baseItem + " text-indigo-600"}>
-          <span className="w-6 text-center">🏠</span>
+        <a href="/dashboard" className={baseItem + " bg-indigo-100 dark:bg-indigo-700/40"}>
+          <FaHome className="w-5 h-5" />
           {!collapsed && <span>Overview</span>}
         </a>
-
-        <a href="/dashboard/my-orders" className={baseItem}>
-          <span className="w-6 text-center">🧾</span>
+        <a href="/dashboard/orders" className={baseItem}>
+          <FaClipboardList className="w-5 h-5" />
           {!collapsed && <span>My Orders</span>}
         </a>
-
         <a href="/dashboard/add-book" className={baseItem}>
-          <span className="w-6 text-center">➕</span>
+          <FaPlus className="w-5 h-5" />
           {!collapsed && <span>Add Book</span>}
         </a>
-
         <a href="/dashboard/my-books" className={baseItem}>
-          <span className="w-6 text-center">📚</span>
+          <FaBook className="w-5 h-5" />
           {!collapsed && <span>My Books</span>}
         </a>
-
         <a href="/dashboard/profile" className={baseItem}>
-          <span className="w-6 text-center">👤</span>
+          <FaUser className="w-5 h-5" />
           {!collapsed && <span>My Profile</span>}
         </a>
-
-        <a href="/dashboard/orders" className={baseItem}>
-          <span className="w-6 text-center">🚚</span>
-          {!collapsed && <span>Orders (Librarian)</span>}
-        </a>
-
         <a href="/dashboard/users" className={baseItem}>
-          <span className="w-6 text-center">🛠️</span>
-          {!collapsed && <span>All Users (Admin)</span>}
+          <FaUsers className="w-5 h-5" />
+          {!collapsed && <span>All Users</span>}
         </a>
       </nav>
 
       {!collapsed && (
-        <div className="mt-6 text-xs text-gray-500">
-          <div>Role: <span className="text-indigo-600 font-semibold">User</span></div>
-          <div className="mt-2">You can manage orders and profile here.</div>
+        <div className="mt-6 text-xs text-gray-600 dark:text-gray-400">
+          <div>
+            Role:{" "}
+            <span className="text-indigo-600 dark:text-indigo-400 font-semibold">
+              User
+            </span>
+          </div>
+          <div className="mt-2">Manage orders, books & profile here.</div>
         </div>
       )}
     </div>

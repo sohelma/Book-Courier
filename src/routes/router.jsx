@@ -20,6 +20,7 @@ import Sidebar from "../pages/Dashboard/Sidebar";
 import AllBooks from "../pages/Books/AllBooks";
 import BookDetails from "../pages/Books/BookDetails";
 import LatestBooks from "../pages/Books/LatestBooks";
+import MyPayment from "../pages/Dashboard/MyPayment";
 
 export const router = createBrowserRouter([
   {
@@ -32,7 +33,7 @@ export const router = createBrowserRouter([
       { path: "books", Component: AllBooks },
       { path: "coverage", Component: Coverage },
       { path: "contact", Component: Contact },
-      {path: "books/:id",Component: BookDetails},
+      { path: "books/:id",Component: BookDetails},
       { path: "books", Component: LatestBooks },
     
       // Dashboard route protected
@@ -51,6 +52,8 @@ export const router = createBrowserRouter([
           { path: "addbook", Component: AddBook },
           { path: "overview", Component: Overview },
           { path: "sidebar", Component: Sidebar },
+          { path: "payment/:id",Component: MyPayment},
+
         ],
       },
     ],

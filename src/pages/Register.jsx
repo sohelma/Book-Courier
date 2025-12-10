@@ -57,59 +57,76 @@ const Register = () => {
         </div>
 
         {/* Registration Form */}
-        <form onSubmit={handleRegister} className="space-y-5">
-          {/* Email */}
-          <div>
-            <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
-              Email
-            </label>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full border px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
 
-        {/* Password */}
-<div className="relative">
-  <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
-    Password
-  </label>
+        {/* Registration Form */}
+<form onSubmit={handleRegister} className="space-y-5">
+  {/* Email */}
+  <div>
+    <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
+      Email
+    </label>
+    <input
+      type="email"
+      placeholder="Enter your email"
+      className="w-full border px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      required
+    />
+  </div>
 
-  <input
-    type={showPassword ? "text" : "password"}
-    placeholder="Password (min 6 chars, upper, lower, number, special)"
-    className="w-full border px-4 py-2 pr-12 rounded-lg focus:ring-2 focus:ring-blue-500 
-    outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-    required
-  />
+  {/* Profile Picture Option */}
+  <div>
+    <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
+      Profile Picture (optional)
+    </label>
+    <input
+      type="file"
+      accept="image/*"
+      className="w-full border px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+      // Optional: onChange={(e) => setProfilePicture(e.target.files[0])}
+    />
+  </div>
 
-  {/* Eye Icon */}
-  <span
-    className="absolute right-4 top-[69%] -translate-y-1/2 cursor-pointer 
-    text-gray-600 dark:text-gray-300 text-xl"
-    onClick={() => setShowPassword(!showPassword)}
+  {/* Password */}
+  <div className="relative">
+    <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
+      Password
+    </label>
+
+    <input
+      type={showPassword ? "text" : "password"}
+      placeholder="Password (min 6 chars, upper, lower, number, special)"
+      className="w-full border px-4 py-2 pr-12 rounded-lg focus:ring-2 focus:ring-blue-500 
+      outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+    />
+
+    {/* Eye Icon */}
+    <span
+      className="absolute right-4 top-[69%] -translate-y-1/2 cursor-pointer 
+      text-gray-600 dark:text-gray-300 text-xl"
+      onClick={() => setShowPassword(!showPassword)}
+    >
+      {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+    </span>
+
+    {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+  </div>
+
+  {/* Register Button */}
+  <button
+    type="submit"
+    className="w-full py-2.5 rounded-lg font-semibold  bg-gradient-to-r from-indigo-500 via-sky-500 to-indigo-400
+              hover:from-indigo-600 hover:via-sky-600 hover:to-indigo-500
+              transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400 flex justify-center items-center transition"
   >
-    {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-  </span>
+    Register 
+  </button>
+</form>
 
-  {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-</div>
-
-
-          {/* Register Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition"
-          >
-            Register
-          </button>
-        </form>
 
         {/* Login Redirect */}
         <p className="text-center text-sm text-gray-600 dark:text-gray-300 mt-4">
