@@ -36,7 +36,7 @@ const BookDetails = () => {
     
     <p className="mb-2">Created : {book.createdAt}</p>
     <p className="mb-2">Order : {book.order}</p>
-    <p className="mb-6">Price : {book.price}</p>
+    <p className="mb-6">Price : {book.price}</p>  
 
     <button
       onClick={() => setIsModalOpen(true)}

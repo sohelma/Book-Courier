@@ -10,7 +10,6 @@ import Contact from "../pages/Contact/Contact";
 
 // Dashboard pages
 import Dashboard from "../pages/Dashboard/Dashboard";
-import DashboardLayout from "../pages/Dashboard/DashboardLayout";
 import MyProfile from "../pages/Dashboard/MyProfile";
 import MyOrders from "../pages/Dashboard/MyOrders";
 import MyWishlist from "../pages/Dashboard/MyWishlist";
@@ -27,16 +26,15 @@ export const router = createBrowserRouter([
     path: "/",
     Component: RootLayout,
     children: [
-      { index: true, Component: Home }, // Public home page
+      { index: true, Component: Home },
       { path: "login", Component: Login },
       { path: "register", Component: Register },
       { path: "books", Component: AllBooks },
+      { path: "books/latest", Component: LatestBooks }, // <-- changed
       { path: "coverage", Component: Coverage },
       { path: "contact", Component: Contact },
-      { path: "books/:id",Component: BookDetails},
-      { path: "books", Component: LatestBooks },
-    
-      // Dashboard route protected
+      { path: "books/:id", Component: BookDetails },
+
       {
         path: "dashboard",
         Component: () => (
@@ -45,15 +43,14 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
         children: [
-          { index: true, Component: MyProfile }, // Default dashboard page
+          { index: true, Component: MyProfile },
           { path: "profile", Component: MyProfile },
           { path: "orders", Component: MyOrders },
           { path: "wishlist", Component: MyWishlist },
           { path: "addbook", Component: AddBook },
           { path: "overview", Component: Overview },
           { path: "sidebar", Component: Sidebar },
-          { path: "payment/:id",Component: MyPayment},
-
+          { path: "payment/:id", Component: MyPayment },
         ],
       },
     ],

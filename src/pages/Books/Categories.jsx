@@ -9,11 +9,13 @@ const categories = [
   { title: "Travel History", imageUrl: "https://i.ibb.co/7tZSGd1x/travel.jpg" },
   { title: "Medical Science", imageUrl: "https://i.ibb.co/k6cBJSvC/med.jpg" },
   { title: "Computer Science & Engineering", imageUrl: "https://i.ibb.co/8R54KZy/1.jpg" },
-  { title: "Kids Zone", imageUrl: "https://i.ibb.co/WWVq95mH/kids.webp" },
+ 
+    { title: "Kids Zone", imageUrl: "https://i.ibb.co.com/BVxmQcXT/kids.webp" },
   { title: "World History", imageUrl: "https://i.ibb.co/SYvVdrZ/history.webp" },
   { title: "Hacking Books", imageUrl: "https://i.ibb.co/WpdNMxvg/hacking.jpg" },
   { title: "Music Practice", imageUrl: "https://i.ibb.co/vxc4dyp5/Music.webp" },
-  { title: "World Geography", imageUrl: "https://i.ibb.co/XYZ/worldgeography.jpg" },
+  { title: "World Geography", imageUrl: "https://i.ibb.co.com/MxP7M8NS/geography.webp" },
+  
 ];
 
 const Categories = () => {
@@ -23,10 +25,16 @@ const Categories = () => {
     cat.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleImageError = (e) => {
+    e.target.src = "https://via.placeholder.com/400x300?text=No+Image";
+  };
+
   return (
     <section className="py-16 bg-gray-50 dark:bg-gray-900 dark:text-white">
       <div className="w-[90%] mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">Explore Our Categories</h2>
+        <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+          Explore Our Categories
+        </h2>
 
         {/* Search Box */}
         <div className="relative mb-10 max-w-sm mx-auto">
@@ -55,6 +63,7 @@ const Categories = () => {
               <img
                 src={cat.imageUrl}
                 alt={cat.title}
+                onError={handleImageError}
                 className="w-full h-56 object-cover brightness-90 dark:brightness-75"
               />
               {/* Title Overlay */}

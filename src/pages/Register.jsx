@@ -1,12 +1,11 @@
 // src/pages/Register.jsx
 
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase.config";
 import toast from "react-hot-toast";
 import logo from "../../public/images/logo.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -14,28 +13,35 @@ const Register = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  
-
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Strong password validation
+    // Password validation
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
     if (!passwordRegex.test(password)) {
       setError(
-        "Password must be at least 6 characters, include uppercase, lowercase, number & special character"
+        "Password must include uppercase, lowercase, number & special character"
       );
       return;
-    } else {
-      setError("");
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      // Create User
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+
+      // Auto set default name + default photo
+      await updateProfile(result.user, {
+        displayName: email.split("@")[0], // auto username from email
+        photoURL: "/default-avatar.png",
+      });
+
       toast.success("Registration Successful!");
+
       setEmail("");
       setPassword("");
+
     } catch (err) {
       toast.error(err.message);
     }
@@ -44,100 +50,79 @@ const Register = () => {
   return (
     <div className="flex justify-center items-center min-h-[80vh] bg-gray-50 dark:bg-gray-900 py-12">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 shadow-xl rounded-xl p-8 border border-gray-200 dark:border-gray-700">
-        
-        {/* Logo Section */}
+
+        {/* Logo */}
         <div className="text-center mb-6">
           <img src={logo} alt="logo" className="w-14 mx-auto" />
           <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-3">
             Create Your Account
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 text-sm">
-            Join Book Courier — Fast Delivery Everywhere
-          </p>
         </div>
 
-        {/* Registration Form */}
+        {/* Form */}
+        <form onSubmit={handleRegister} className="space-y-5">
+          
+          {/* Email */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
+              Email
+            </label>
+            <input
+              type="email"
+              className="w-full border px-4 py-2 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        {/* Registration Form */}
-<form onSubmit={handleRegister} className="space-y-5">
-  {/* Email */}
-  <div>
-    <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
-      Email
-    </label>
-    <input
-      type="email"
-      placeholder="Enter your email"
-      className="w-full border px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      required
-    />
-  </div>
+          {/* Password */}
+          <div className="relative">
+            <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
+              Password
+            </label>
 
-  {/* Profile Picture Option */}
-  <div>
-    <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
-      Profile Picture (optional)
-    </label>
-    <input
-      type="file"
-      accept="image/*"
-      className="w-full border px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-      // Optional: onChange={(e) => setProfilePicture(e.target.files[0])}
-    />
-  </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Strong Password"
+              className="w-full border px-4 py-2 pr-12 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
 
-  {/* Password */}
-  <div className="relative">
-    <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
-      Password
-    </label>
+            {/* Eye Icon */}
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-600 dark:text-gray-300 text-xl"
+            >
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+            </span>
 
-    <input
-      type={showPassword ? "text" : "password"}
-      placeholder="Password (min 6 chars, upper, lower, number, special)"
-      className="w-full border px-4 py-2 pr-12 rounded-lg focus:ring-2 focus:ring-blue-500 
-      outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      required
-    />
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+          </div>
 
-    {/* Eye Icon */}
-    <span
-      className="absolute right-4 top-[69%] -translate-y-1/2 cursor-pointer 
-      text-gray-600 dark:text-gray-300 text-xl"
-      onClick={() => setShowPassword(!showPassword)}
-    >
-      {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-    </span>
-
-    {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-  </div>
-
-  {/* Register Button */}
-  <button
-    type="submit"
-    className="w-full py-2.5 rounded-lg font-semibold  bg-gradient-to-r from-indigo-500 via-sky-500 to-indigo-400
+          {/* Register Button */}
+          <button
+            type="submit"
+            className="w-full py-2.5 rounded-lg font-semibold 
+              bg-gradient-to-r from-indigo-500 via-sky-500 to-indigo-400
               hover:from-indigo-600 hover:via-sky-600 hover:to-indigo-500
-              transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400 flex justify-center items-center transition"
-  >
-    Register 
-  </button>
-</form>
-
-
-        {/* Login Redirect */}
-        <p className="text-center text-sm text-gray-600 dark:text-gray-300 mt-4">
-          Already have an account?{" "}
-          <a
-            href="/login"
-            className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+              transition-all duration-300 text-white shadow-md"
           >
+            Register
+          </button>
+        </form>
+
+        {/* Redirect */}
+        <p className="text-center text-sm text-gray-600 dark:text-gray-300 mt-4">
+          Already have an account?
+          <a href="/login" className="text-blue-600 dark:text-blue-400 font-semibold">
             Login
           </a>
         </p>
+
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 // src/firebase.config.js
-
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_apiKey,
@@ -12,15 +12,15 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_appId,
 };
 
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Auth instance
 const auth = getAuth(app);
-
-// Google provider
 const googleProvider = new GoogleAuthProvider();
 
+// Storage instance
+const storage = getStorage(app);
+
 // Export
-export { auth, googleProvider };
+export { auth, googleProvider, storage };
