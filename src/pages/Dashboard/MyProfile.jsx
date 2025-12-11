@@ -7,7 +7,7 @@ import { updateProfile } from "firebase/auth";
 import toast, { Toaster } from "react-hot-toast";
 
 const MyProfile = () => {
-  const { user } = useAuth(); // AuthContext থেকে user
+  const { user, setUser } = useAuth();
   const [name, setName] = useState("");
   const [photoURL, setPhotoURL] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -24,7 +24,7 @@ const MyProfile = () => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      setPhotoURL(URL.createObjectURL(file)); // preview
+      setPhotoURL(URL.createObjectURL(file)); // local preview
     }
   };
 
@@ -34,15 +34,22 @@ const MyProfile = () => {
     try {
       let updatedPhotoURL = photoURL;
 
-      // যদি নতুন ছবি আপলোড হয়
+      // Upload image to Firebase Storage
       if (imageFile) {
         const storageRef = ref(storage, `profile/${user.uid}/${imageFile.name}`);
         await uploadBytes(storageRef, imageFile);
         updatedPhotoURL = await getDownloadURL(storageRef);
       }
 
-      // Firebase Auth এ আপডেট
+      // Update Firebase Auth profile
       await updateProfile(auth.currentUser, { displayName: name, photoURL: updatedPhotoURL });
+
+      // Update Context so Navbar auto-refreshes
+      setUser({
+        ...user,
+        name: name,
+        photo: updatedPhotoURL,
+      });
 
       toast.success("Profile updated successfully!");
     } catch (err) {
@@ -61,17 +68,20 @@ const MyProfile = () => {
       </h2>
 
       <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 flex flex-col items-center gap-6">
+        {/* Profile Image */}
         <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-indigo-500">
           <img src={photoURL} alt="Profile" className="w-full h-full object-cover" />
         </div>
 
+        {/* Choose File Button */}
         <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="text-sm text-gray-600 dark:text-gray-300"
+          className="cursor-pointer px-4 py-2 rounded-lg bg-sky-500 text-white hover:bg-sky-600 transition"
         />
 
+        {/* Name Input */}
         <input
           type="text"
           value={name}
@@ -80,6 +90,7 @@ const MyProfile = () => {
           placeholder="Name"
         />
 
+        {/* Email (readonly) */}
         <input
           type="email"
           value={user?.email || ""}
@@ -87,6 +98,7 @@ const MyProfile = () => {
           className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
         />
 
+        {/* Update Button */}
         <button
           onClick={handleUpdateProfile}
           disabled={loading}
