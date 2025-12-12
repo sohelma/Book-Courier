@@ -20,6 +20,11 @@ import AllBooks from "../pages/Books/AllBooks";
 import BookDetails from "../pages/Books/BookDetails";
 import LatestBooks from "../pages/Books/LatestBooks";
 import MyPayment from "../pages/Dashboard/MyPayment";
+import PaymentList from "../pages/Dashboard/PaymentList";
+import MyBooks from "../pages/Dashboard/MyBooks";
+import PaymentPage from "../pages/Dashboard/PaymentPage";
+
+
 
 export const router = createBrowserRouter([
   {
@@ -46,11 +51,17 @@ export const router = createBrowserRouter([
           { index: true, Component: MyProfile },
           { path: "profile", Component: MyProfile },
           { path: "orders", Component: MyOrders },
-          { path: "wishlist", Component: MyWishlist },
-          { path: "addbook", Component: AddBook },
+          { path: "my-books", Component: MyBooks },
+          { path: "add-book", Component: AddBook },
           { path: "overview", Component: Overview },
-          { path: "sidebar", Component: Sidebar },
-          { path: "payment/:id", Component: MyPayment },
+          { path: "sidebar", Component: Sidebar },    
+          { path: "payments", Component: PaymentList },
+          { path: "payment/:id", Component: PaymentPage }, // Pay Now route
+          { path: "wishlist", Component: MyWishlist },
+
+
+     
+
         ],
       },
     ],

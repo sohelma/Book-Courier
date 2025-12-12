@@ -1,5 +1,6 @@
 // src/pages/Dashboard/Sidebar.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   FaHome,
   FaBook,
@@ -7,9 +8,10 @@ import {
   FaUser,
   FaClipboardList,
   FaUsers,
+  FaHeart,
 } from "react-icons/fa";
 
-const Sidebar = ({ collapsed = false, onToggle }) => {
+const Sidebar = ({ collapsed = false }) => {
   const baseItem =
     "flex items-center gap-3 px-3 py-2 rounded-lg " +
     "hover:bg-gray-200 dark:hover:bg-gray-700 " +
@@ -19,38 +21,50 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
     <div
       className={`${
         collapsed ? "w-20" : "w-64"
-      } h-screen bg-gray-100 dark:bg-gray-900 
-      border-r border-gray-300 dark:border-gray-700 
-      p-4 flex flex-col justify-between transition-all duration-300 text-gray-900 dark:text-gray-200`}
+      } h-screen bg-gray-100 dark:bg-gray-900 border-r border-gray-300 dark:border-gray-700 p-4 flex flex-col justify-between transition-all duration-300`}
     >
-   
-
-      {/* Navigation */}
       <nav className="space-y-1">
-        <a href="/dashboard" className={baseItem + " bg-indigo-100 dark:bg-indigo-700/40"}>
+
+        <Link to="/dashboard" className={baseItem + " bg-indigo-100 dark:bg-indigo-700/40"}>
           <FaHome className="w-5 h-5" />
           {!collapsed && <span>Overview</span>}
-        </a>
-        <a href="/dashboard/orders" className={baseItem}>
+        </Link>
+
+        <Link to="/dashboard/orders" className={baseItem}>
           <FaClipboardList className="w-5 h-5" />
           {!collapsed && <span>My Orders</span>}
-        </a>
-        <a href="/dashboard/add-book" className={baseItem}>
+        </Link>
+
+        {/* ⭐ Added Wishlist */}
+        <Link to="/dashboard/wishlist" className={baseItem}>
+          <FaHeart className="w-5 h-5 text-rose-500" />
+          {!collapsed && <span>My Wishlist</span>}
+        </Link>
+
+        <Link to="/dashboard/add-book" className={baseItem}>
           <FaPlus className="w-5 h-5" />
           {!collapsed && <span>Add Book</span>}
-        </a>
-        <a href="/dashboard/my-books" className={baseItem}>
+        </Link>
+
+        <Link to="/dashboard/my-books" className={baseItem}>
           <FaBook className="w-5 h-5" />
           {!collapsed && <span>My Books</span>}
-        </a>
-        <a href="/dashboard/profile" className={baseItem}>
+        </Link>
+
+        <Link to="/dashboard/profile" className={baseItem}>
           <FaUser className="w-5 h-5" />
           {!collapsed && <span>My Profile</span>}
-        </a>
-        <a href="/dashboard/users" className={baseItem}>
+        </Link>
+
+        <Link to="/dashboard/payments" className={baseItem}>
+          <FaClipboardList className="w-5 h-5" />
+          {!collapsed && <span>Payment List</span>}
+        </Link>
+
+        <Link to="/dashboard/users" className={baseItem}>
           <FaUsers className="w-5 h-5" />
           {!collapsed && <span>All Users</span>}
-        </a>
+        </Link>
       </nav>
 
       {!collapsed && (
@@ -61,7 +75,7 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
               User
             </span>
           </div>
-          <div className="mt-2">Manage orders, books & profile here.</div>
+          <div className="mt-2">Manage orders, wishlist, books & profile here.</div>
         </div>
       )}
     </div>

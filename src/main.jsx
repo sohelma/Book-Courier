@@ -6,6 +6,7 @@ import './index.css';
 import App from './App.jsx';
 import { router } from './routes/router.jsx';
 import { AuthProvider } from './context/AuthContext'; 
+import { WishlistProvider } from "./context/WishlistContext";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -1,89 +1,114 @@
 // src/components/OrderModal.jsx
 import React, { useState } from "react";
-import axios from "axios"; // <-- add this
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const OrderModal = ({ visible, onClose, book }) => {
-  if (!visible) return null;
-
-  const user = {
-    name: "John Doe",
-    email: "john@example.com",
-  };
-
+  const { user } = useAuth(); // logged-in user
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleOrder = async () => {
-    const orderData = {
-      bookId: book._id,
-      bookTitle: book.title,
-      name: user.name,
-      email: user.email,
-      phone,
-      address,
-      status: "pending",
-      paymentStatus: "unpaid",
-      createdAt: new Date(),
-    };
+  if (!visible) return null;
 
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault();
+    if (!user?.email) {
+      toast.error("Please login first!");
+      return;
+    }
+
+    if (!phone || !address) {
+      toast.error("Please fill phone and address");
+      return;
+    }
+
+    setLoading(true);
     try {
-      await axios.post("http://localhost:3000/orders", orderData);
-      alert("Order placed successfully!");
-      onClose();
+      const orderData = {
+        email: user.email,       // context থেকে login email
+        bookId: book._id,
+        bookTitle: book.title,
+        price: book.price,
+        status: "pending",
+        paymentStatus: "pending",
+        createdAt: new Date(),
+        phone,
+        address,
+      };
+
+      const res = await axios.post("http://localhost:3000/orders", orderData);
+
+      if (res.status === 200) {
+        toast.success("Order placed successfully!");
+        setPhone("");
+        setAddress("");
+        onClose(); // modal বন্ধ
+      } else {
+        toast.error("Failed to place order");
+      }
     } catch (err) {
       console.error(err);
-      alert("Failed to place order");
+      toast.error("Failed to place order");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div
-      className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex justify-center items-center p-4"
-      onClick={onClose}
-    >
-      <div
-        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-6 rounded-xl shadow-2xl w-96 max-h-[85vh] overflow-y-auto flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-2xl font-bold mb-4">Place Order</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <Toaster position="top-right" />
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md shadow-lg">
+        <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+          Place Order for: {book.title}
+        </h2>
 
-        <label className="block mb-1 font-medium">Name</label>
-        <input value={user.name} readOnly className="w-full p-2 mb-3 border rounded bg-gray-100 dark:bg-gray-700" />
+        <form onSubmit={handlePlaceOrder} className="space-y-4">
+          <div>
+            <label className="block text-gray-700 dark:text-gray-200 mb-1">Phone</label>
+            <input
+              type="text"
+              placeholder="Enter phone number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full px-3 py-2 border rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              required
+            />
+          </div>
 
-        <label className="block mb-1 font-medium">Email</label>
-        <input value={user.email} readOnly className="w-full p-2 mb-3 border rounded bg-gray-100 dark:bg-gray-700" />
+          <div>
+            <label className="block text-gray-700 dark:text-gray-200 mb-1">Address</label>
+            <textarea
+              placeholder="Enter address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="w-full px-3 py-2 border rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              required
+            />
+          </div>
 
-        <label className="block mb-1 font-medium">Phone Number</label>
-        <input
-          type="text"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="w-full p-2 mb-3 border rounded bg-gray-100 dark:bg-gray-700"
-        />
+          <div className="flex justify-end gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-100 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition"
+            >
+              Cancel
+            </button>
 
-        <label className="block mb-1 font-medium">Address</label>
-        <textarea
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="w-full p-2 mb-4 border rounded bg-gray-100 dark:bg-gray-700"
-        />
-
-        <button
-          onClick={handleOrder}
-          className="w-full py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-        >
-          Place Order
-        </button>
-
-        <div className="mt-auto pt-4 border-t border-gray-300 dark:border-gray-700 flex justify-between text-sm">
-          <p className="text-gray-500 dark:text-gray-400">Need help?</p>
-          <button
-            onClick={onClose}
-            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Close
-          </button>
-        </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition flex items-center justify-center"
+            >
+              {loading && (
+                <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+              )}
+              Place Order
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

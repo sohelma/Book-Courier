@@ -1,10 +1,12 @@
+// Login.jsx
 import React, { useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../firebase.config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase.config";
 import toast, { Toaster } from "react-hot-toast";
-import { FcGoogle } from "react-icons/fc"; // Google icon
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Eye icons
-import { useNavigate } from "react-router-dom"; // <-- add this
+import { FcGoogle } from "react-icons/fc";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,18 +14,19 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // <-- initialize navigate
+  const { googleLogin } = useAuth(); // context use
+  const navigate = useNavigate();
 
-  // Email/Password login
+  // Email/password login
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Login Successful!");
-      navigate("/"); // <-- redirect to home after login
+      toast.success("Login Successful!", { duration: 3000 });
+      setTimeout(() => navigate("/"), 500);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message, { duration: 4000 });
     }
     setLoading(false);
   };
@@ -32,11 +35,11 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     setLoading(true);
     try {
-      await signInWithPopup(auth, googleProvider);
-      toast.success("Login with Google Successful!");
-      navigate("/"); // <-- redirect to home after Google login
+      await googleLogin();
+      toast.success("Google Login Successful!", { duration: 3000 });
+      setTimeout(() => navigate("/"), 500);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message, { duration: 4000 });
     }
     setLoading(false);
   };
@@ -55,7 +58,6 @@ const Login = () => {
         </div>
 
         <form onSubmit={handleLogin} className="space-y-5">
-          {/* Email */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
               Email
@@ -69,32 +71,25 @@ const Login = () => {
             />
           </div>
 
-          {/* Password */}
           <div className="relative">
             <label className="block text-gray-700 dark:text-gray-200 mb-1 font-medium">
-                Password
+              Password
             </label>
-
             <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                className="w-full border px-4 py-2 rounded-lg focus:ring-2 
-                focus:ring-blue-500 outline-none bg-white dark:bg-gray-700 
-                text-gray-900 dark:text-gray-100"
-                onChange={(e) => setPassword(e.target.value)}
-                required
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter your password"
+              className="w-full border px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
-
-            {/* Eye Icon */}
             <span
-                className="absolute right-4 top-[69%]-translate
-                cursor-pointer text-gray-600 dark:text-gray-300 text-xl"
-                onClick={() => setShowPassword(!showPassword)} >
-                {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              className="absolute right-4 top-[50%] -translate-y-1/2 cursor-pointer text-gray-600 dark:text-gray-300 text-xl"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
           </div>
 
-          {/* Login button */}
           <button
             type="submit"
             className="w-full py-2.5 rounded-lg font-semibold text-white
@@ -115,7 +110,6 @@ const Login = () => {
           <hr className="flex-1 border-gray-300 dark:border-gray-600" />
         </div>
 
-        {/* Google login button */}
         <button
           onClick={handleGoogleLogin}
           className="w-full flex justify-center items-center gap-2 py-2.5 rounded-lg font-semibold text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
@@ -123,7 +117,6 @@ const Login = () => {
           <FcGoogle size={22} /> Login with Google
         </button>
 
-        {/* Redirect to register */}
         <p className="text-center text-sm text-gray-600 dark:text-gray-300 mt-4">
           Don't have an account?{" "}
           <a href="/register" className="text-blue-600 font-semibold hover:underline">
