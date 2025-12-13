@@ -40,16 +40,6 @@ Skeleton loaders for better UX
 
 Modern dashboard with charts
 
-🔐 Environment Variables
-
-Create a .env file in the root directory:
-
-VITE_apiKey=your_firebase_api_key
-VITE_authDomain=your_firebase_auth_domain
-VITE_projectId=your_firebase_project_id
-VITE_storageBucket=your_firebase_storage_bucket
-VITE_messagingSenderId=your_firebase_sender_id
-VITE_appId=your_firebase_app_id
 
 ▶️ Run Locally
 npm install
