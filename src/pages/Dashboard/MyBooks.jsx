@@ -1,40 +1,59 @@
+// src/pages/Dashboard/MyBooks.jsx
 import React, { useEffect, useState } from "react";
-import BookCard from "../../components/BookCard/BookCard";
+import { useAuth } from "../../context/AuthContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
-const MyBooks = ({ user }) => {
+const MyBooks = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!user?.email) return;
     const fetchBooks = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/books?addedBy=${user.email}`);
-        const data = await res.json();
-        setBooks(data);
+        const res = await axios.get(`http://localhost:3000/books?addedBy=${user.email}`);
+        setBooks(res.data);
       } catch (err) {
-        console.error("Error fetching books:", err);
-      } finally {
-        setLoading(false);
+        console.error(err);
+        toast.error("Failed to load books");
       }
     };
-
     fetchBooks();
-  }, [user.email]);
+  }, [user]);
 
-  if (loading) return <p className="text-center py-10">Loading...</p>;
+  const handleStatusToggle = async (bookId, currentStatus) => {
+    const newStatus = currentStatus === "published" ? "unpublished" : "published";
+    try {
+      await axios.patch(`http://localhost:3000/books/${bookId}`, { status: newStatus });
+      setBooks(prev => prev.map(b => b._id === bookId ? { ...b, status: newStatus } : b));
+      toast.success(`Book ${newStatus}!`);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update status");
+    }
+  };
 
   return (
-    <div className="p-6 min-h-[80vh]">
-      <h1 className="text-3xl font-bold mb-6 text-center">My Books</h1>
-      {books.length === 0 ? (
-        <p className="text-center text-gray-500">You have not added any books yet.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {books.map((book) => (
-            <BookCard key={book._id} book={book} />
-          ))}
-        </div>
-      )}
+    <div className="p-4">
+      <Toaster />
+      <h2 className="text-2xl font-bold mb-4">My Books</h2>
+      {books.length === 0 && <p>No books found</p>}
+      <ul>
+        {books.map(book => (
+          <li key={book._id} className="flex justify-between gap-4 border p-2">
+            <span>{book.title} (${book.price})</span>
+            <div>
+              <button onClick={() => navigate(`/dashboard/edit-book/${book._id}`)}>Edit</button>
+              <button onClick={() => handleStatusToggle(book._id, book.status)}>
+                {book.status === "published" ? "Unpublish" : "Publish"}
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

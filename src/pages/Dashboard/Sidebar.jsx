@@ -65,6 +65,12 @@ const Sidebar = ({ collapsed = false }) => {
           <FaUsers className="w-5 h-5" />
           {!collapsed && <span>All Users</span>}
         </Link>
+       <Link to="/dashboard/librarian-orders" className={baseItem}>
+    <FaClipboardList className="w-5 h-5" />
+    {!collapsed && <span>Librarian Orders</span>}
+   </Link>
+
+
       </nav>
 
       {!collapsed && (

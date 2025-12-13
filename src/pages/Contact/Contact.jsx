@@ -22,7 +22,7 @@ const Contact = () => {
       {/* Section Header */}
       <div className="text-center mb-10">
         <h1 className="text-3xl md:text-4xl font-bold">
-          Contact <span className="text-primary">Us</span>
+          Contact Us
         </h1>
         <p className="mt-2 text-base-content/70">
           We are always here to assist you. Feel free to reach out.

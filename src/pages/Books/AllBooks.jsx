@@ -31,7 +31,7 @@ const AllBooks = () => {
 
   return (
     <div className="p-6 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <h1 className="text-3xl font-bold mb-6 text-center text-indigo-600 dark:text-indigo-400">
+      <h1 className="text-3xl font-bold mb-6 text-center dark:text-indigo-400">
         All Books
       </h1>
 
