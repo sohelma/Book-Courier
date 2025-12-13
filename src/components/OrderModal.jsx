@@ -59,6 +59,14 @@ const OrderModal = ({ visible, onClose, book }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <Toaster position="top-right" />
+
+      <Toaster
+  position="top-right"
+  toastOptions={{
+    duration: 1500, // 1.5 second
+  }}
+/>
+
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md shadow-lg">
         <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
           Place Order for: {book.title}

@@ -6,17 +6,34 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import toast, { Toaster } from "react-hot-toast";
 
+const ProfileSkeleton = () => {
+  return (
+    <div className="max-w-md mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8 animate-pulse">
+      <div className="flex flex-col items-center gap-6">
+        <div className="w-24 h-24 rounded-full bg-gray-300 dark:bg-gray-700" />
+        <div className="w-full h-10 rounded bg-gray-300 dark:bg-gray-700" />
+        <div className="w-full h-10 rounded bg-gray-300 dark:bg-gray-700" />
+        <div className="w-full h-10 rounded bg-gray-300 dark:bg-gray-700" />
+        <div className="w-full h-11 rounded bg-gray-400 dark:bg-gray-600" />
+      </div>
+    </div>
+  );
+};
+
 const MyProfile = () => {
   const { user, setUser } = useAuth();
+
   const [name, setName] = useState("");
   const [photoURL, setPhotoURL] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     if (user) {
-      setName(user.name || "");
-      setPhotoURL(user.photo || "https://i.pravatar.cc/150");
+      setName(user.displayName || "");
+      setPhotoURL(user.photoURL || "https://i.pravatar.cc/150");
+      setLoading(false);
     }
   }, [user]);
 
@@ -24,94 +41,99 @@ const MyProfile = () => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      setPhotoURL(URL.createObjectURL(file)); // local preview
+      setPhotoURL(URL.createObjectURL(file));
     }
   };
 
   const handleUpdateProfile = async () => {
     if (!user) return;
-    setLoading(true);
+
+    setUpdating(true);
+
     try {
       let updatedPhotoURL = photoURL;
 
-      // Upload image to Firebase Storage
       if (imageFile) {
         const storageRef = ref(storage, `profile/${user.uid}/${imageFile.name}`);
         await uploadBytes(storageRef, imageFile);
         updatedPhotoURL = await getDownloadURL(storageRef);
       }
 
-      // Update Firebase Auth profile
-      await updateProfile(auth.currentUser, { displayName: name, photoURL: updatedPhotoURL });
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+        photoURL: updatedPhotoURL,
+      });
 
-      // Update Context
-      setUser({ ...user, name: name, photo: updatedPhotoURL });
+      setUser({
+        ...user,
+        displayName: name,
+        photoURL: updatedPhotoURL,
+      });
 
-      toast.success("Profile updated successfully!");
+      toast.success("Profile updated successfully!", { duration: 1500 });
     } catch (err) {
       console.error(err);
-      toast.error("Failed to update profile");
+      toast.error("Failed to update profile", { duration: 1500 });
     } finally {
-      setLoading(false);
+      setUpdating(false);
     }
   };
 
   return (
     <div className="min-h-[80vh] p-6 sm:p-10 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <Toaster position="top-right" />
+
       <h2 className="text-3xl font-bold text-gray-900 dark:text-indigo-400 mb-10 text-center">
         My Profile
       </h2>
 
-      <div className="max-w-md mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8 flex flex-col items-center gap-6">
-        {/* Profile Image */}
-        <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-indigo-500">
-          <img src={photoURL} alt="Profile" className="w-full h-full object-cover" />
-        </div>
-
-        {/* Choose File Button */}
-        <label className="w-full">
-          <span className="block mb-1 text-gray-700 dark:text-gray-200 font-medium">Change Profile Image</span>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="w-full cursor-pointer px-4 py-2 rounded-lg bg-sky-500 text-white hover:bg-sky-600 transition"
+      {loading ? (
+        <ProfileSkeleton />
+      ) : (
+        <div className="max-w-md mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8 flex flex-col items-center gap-6">
+          <img
+            src={photoURL}
+            alt="Profile"
+            className="w-24 h-24 rounded-full object-cover border-2 border-indigo-500"
           />
-        </label>
 
-        {/* Name Input */}
-        <div className="w-full">
-          <label className="block mb-1 text-gray-700 dark:text-gray-200 font-medium">Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-            placeholder="Your Name"
-          />
+          <label className="w-full">
+            <span className="block mb-1 font-medium">Change Profile Image</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full px-4 py-2 rounded-lg bg-sky-500 text-white cursor-pointer"
+            />
+          </label>
+
+          <div className="w-full">
+            <label className="block mb-1 font-medium">Name</label>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border bg-gray-100 dark:bg-gray-700"
+            />
+          </div>
+
+          <div className="w-full">
+            <label className="block mb-1 font-medium">Email</label>
+            <input
+              value={user.email}
+              readOnly
+              className="w-full px-4 py-2 rounded-lg border bg-gray-100 dark:bg-gray-700"
+            />
+          </div>
+
+          <button
+            onClick={handleUpdateProfile}
+            disabled={updating}
+            className="w-full py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition"
+          >
+            {updating ? "Updating..." : "Update Profile"}
+          </button>
         </div>
-
-        {/* Email (readonly) */}
-        <div className="w-full">
-          <label className="block mb-1 text-gray-700 dark:text-gray-200 font-medium">Email</label>
-          <input
-            type="email"
-            value={user?.email || ""}
-            readOnly
-            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
-          />
-        </div>
-
-        {/* Update Button */}
-        <button
-          onClick={handleUpdateProfile}
-          disabled={loading}
-          className="w-full py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition"
-        >
-          {loading ? "Updating..." : "Update Profile"}
-        </button>
-      </div>
+      )}
     </div>
   );
 };
