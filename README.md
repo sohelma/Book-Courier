@@ -1,18 +1,76 @@
+BookCourier – Client Side
 
-//Book courier client
-# React + Vite
+🎯 Project Purpose
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+BookCourier client is a React-based frontend application that allows users to browse books, place orders, manage wishlist, make payments, and access role-based dashboards with a modern and responsive UI.
 
-Currently, two official plugins are available:
+⚙️ Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+React.js
 
-## React Compiler
+React Router DOM
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Tailwind CSS
 
-## Expanding the ESLint configuration
+Firebase Authentication
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Axios
+
+React Hot Toast
+
+Chart.js / Recharts (Dashboard charts)
+
+✨ Key Features
+
+Email & Google authentication
+
+Private & role-based routes
+
+Responsive UI (Mobile / Tablet / Desktop)
+
+Light & Dark mode
+
+Book listing & details
+
+Order, wishlist & payment system
+
+Profile update with image upload
+
+Skeleton loaders for better UX
+
+Modern dashboard with charts
+
+🔐 Environment Variables
+
+Create a .env file in the root directory:
+
+VITE_apiKey=your_firebase_api_key
+VITE_authDomain=your_firebase_auth_domain
+VITE_projectId=your_firebase_project_id
+VITE_storageBucket=your_firebase_storage_bucket
+VITE_messagingSenderId=your_firebase_sender_id
+VITE_appId=your_firebase_app_id
+
+▶️ Run Locally
+npm install
+npm run dev
+
+📦 NPM Packages
+
+react
+
+react-router-dom
+
+axios
+
+firebase
+
+react-hot-toast
+
+⚠️ Notes
+
+Firebase config secured with environment variables
+
+Reloading private routes does not redirect to login
+
+Domain added in Firebase for production deployment
