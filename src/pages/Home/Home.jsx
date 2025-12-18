@@ -8,6 +8,7 @@ import LatestBooks from '../Books/LatestBooks';
 import WhyChoose from '../Books/WhyChoose';
 import Categories from '../Books/Categories';
 import Testimonials from '../Books/Testimonials';
+import BackToTop from '../../components/BackToTop';
 
 
 const Home = () => {
@@ -20,7 +21,9 @@ const Home = () => {
         <WhyChoose></WhyChoose> 
         <Categories></Categories>
         <Testimonials></Testimonials>
-        <Coverage></Coverage>      
+        <Coverage></Coverage> 
+        <BackToTop></BackToTop>
+             
         </div>
     );
 };

@@ -49,7 +49,7 @@ const Banner = () => {
                 <p className="text-base md:text-lg text-gray-700 dark:text-gray-300">
                   {slide.description}
                 </p>
-                <div className="flex justify-start">
+                <div className="flex justify-center">
                   <Link
                     to={slide.link}
                     className="px-6 py-2 text-sm font-semibold bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl transition shadow-lg"

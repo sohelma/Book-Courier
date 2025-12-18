@@ -1,4 +1,3 @@
-// src/pages/Dashboard/EditBook.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -16,17 +15,19 @@ const EditBook = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const userEmail = localStorage.getItem("userEmail") || "";
+
   // Fetch book data
   useEffect(() => {
     const fetchBook = async () => {
       try {
         const res = await axios.get(`http://localhost:3000/books/${bookId}`);
         const book = res.data;
-        setTitle(book.title);
-        setDescription(book.description);
-        setPrice(book.price);
-        setStatus(book.isActive ? "published" : "unpublished");
-        setImageUrl(book.imageUrl);
+        setTitle(book.title || "");
+        setDescription(book.description || "");
+        setPrice(book.price || "");
+        setStatus(book.status || "unpublished");
+        setImageUrl(book.imageUrl || "");
       } catch (err) {
         console.error(err);
         toast.error("Failed to fetch book");
@@ -34,24 +35,32 @@ const EditBook = () => {
         setLoading(false);
       }
     };
-
     fetchBook();
   }, [bookId]);
 
   const handleSave = async () => {
+    if (!title || !description || !price) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+
     setSaving(true);
     try {
-      await axios.patch(`http://localhost:3000/books/${bookId}`, {
-        title,
-        description,
-        price,
-        imageUrl,
+      const res = await axios.patch(`http://localhost:3000/books/${bookId}`, {
+        title: title || "",
+        description: description || "",
+        price: price || "",
+        imageUrl: imageUrl || "",
+        status,
         isActive: status === "published",
+        addedBy: userEmail, // auto set
       });
+
+      console.log("Updated book id:", bookId);
       toast.success("Book updated successfully!");
       navigate("/dashboard/my-books");
     } catch (err) {
-      console.error(err);
+      console.error("Failed to update book:", err);
       toast.error("Failed to update book");
     } finally {
       setSaving(false);
@@ -75,7 +84,7 @@ const EditBook = () => {
           </label>
           <input
             type="text"
-            value={title}
+            value={title || ""}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
             placeholder="Book Title"
@@ -88,7 +97,7 @@ const EditBook = () => {
             Description
           </label>
           <textarea
-            value={description}
+            value={description || ""}
             onChange={(e) => setDescription(e.target.value)}
             rows={4}
             className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
@@ -103,26 +112,11 @@ const EditBook = () => {
           </label>
           <input
             type="number"
-            value={price}
+            value={price || ""}
             onChange={(e) => setPrice(e.target.value)}
             className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
             placeholder="Price"
           />
-        </div>
-
-        {/* Status */}
-        <div>
-          <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">
-            Status
-          </label>
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          >
-            <option value="published">Published</option>
-            <option value="unpublished">Unpublished</option>
-          </select>
         </div>
 
         {/* Image URL */}
@@ -132,7 +126,7 @@ const EditBook = () => {
           </label>
           <input
             type="text"
-            value={imageUrl}
+            value={imageUrl || ""}
             onChange={(e) => setImageUrl(e.target.value)}
             className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
             placeholder="Image URL"

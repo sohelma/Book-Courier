@@ -1,15 +1,9 @@
 // src/pages/Dashboard/Sidebar.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  FaHome,
-  FaBook,
-  FaPlus,
-  FaUser,
-  FaClipboardList,
-  FaUsers,
-  FaHeart,
-} from "react-icons/fa";
+import { FaHome,FaBook,FaPlus,FaUser,FaClipboardList,FaUsers,FaHeart,} from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
+
 
 const Sidebar = ({ collapsed = false }) => {
   const baseItem =
@@ -35,7 +29,7 @@ const Sidebar = ({ collapsed = false }) => {
           {!collapsed && <span>My Orders</span>}
         </Link>
 
-        {/* ⭐ Added Wishlist */}
+        {/*  Added Wishlist */}
         <Link to="/dashboard/wishlist" className={baseItem}>
           <FaHeart className="w-5 h-5 text-rose-500" />
           {!collapsed && <span>My Wishlist</span>}
@@ -60,16 +54,20 @@ const Sidebar = ({ collapsed = false }) => {
           <FaClipboardList className="w-5 h-5" />
           {!collapsed && <span>Payment List</span>}
         </Link>
+       <Link to="/dashboard/librarian-orders" className={baseItem}>
+          <FaClipboardList className="w-5 h-5" />
+          {!collapsed && <span>Librarian Orders</span>}
+       </Link>
+      
+        <Link to="/dashboard/manage-books" className={baseItem}>
+          <FaClipboardList className="w-5 h-5" />
+          {!collapsed && <span>Manage Books</span>}
+       </Link>
 
-        <Link to="/dashboard/users" className={baseItem}>
+       <Link to="/dashboard/all-users" className={baseItem}>
           <FaUsers className="w-5 h-5" />
           {!collapsed && <span>All Users</span>}
         </Link>
-       <Link to="/dashboard/librarian-orders" className={baseItem}>
-    <FaClipboardList className="w-5 h-5" />
-    {!collapsed && <span>Librarian Orders</span>}
-   </Link>
-
 
       </nav>
 

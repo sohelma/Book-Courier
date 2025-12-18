@@ -1,60 +1,133 @@
-// src/pages/Dashboard/AddBook.jsx
 import React, { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 const AddBook = () => {
-  const { user } = useAuth(); // logged-in user
+  const navigate = useNavigate();
+  const userEmail = localStorage.getItem("userEmail") || "";
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [status, setStatus] = useState("published");
   const [imageUrl, setImageUrl] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("published");
+  const [saving, setSaving] = useState(false);
 
   const handleAddBook = async () => {
-    if (!title || !price) {
-      toast.error("Title and Price required!");
+
+    console.log("Adding book by:", userEmail); 
+
+    if (!title || !description || !price) {
+      toast.error("Please fill all required fields");
       return;
     }
 
-    setLoading(true);
+    setSaving(true);
     try {
-      await axios.post("http://localhost:3000/books", {
-        title,
-        description,
-        price: Number(price),
+      const res = await axios.post("http://localhost:3000/books", {
+        title: title || "",
+        description: description || "",
+        price: price || "",
+        imageUrl: imageUrl || "",
         status,
-        imageUrl,
-        addedBy: user.email, // ✅ logged-in user email
-        createdAt: new Date(),
+        isActive: status === "published",
+        addedBy: userEmail, // auto set
       });
+
+      console.log("Inserted book id:", res.data.insertedId);
       toast.success("Book added successfully!");
-      setTitle(""); setDescription(""); setPrice(""); setImageUrl(""); setStatus("published");
+      navigate("/dashboard/my-books");
     } catch (err) {
-      console.error(err);
+      console.error("Failed to add book:", err);
       toast.error("Failed to add book");
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
   return (
-    <div className="p-6">
-      <Toaster />
-      <h2 className="text-2xl font-bold mb-4">Add Book</h2>
-      <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Book Title" />
-      <input value={description} onChange={e => setDescription(e.target.value)} placeholder="Description" />
-      <input type="number" value={price} onChange={e => setPrice(e.target.value)} placeholder="Price" />
-      <input value={imageUrl} onChange={e => setImageUrl(e.target.value)} placeholder="Image URL" />
-      <select value={status} onChange={e => setStatus(e.target.value)}>
-        <option value="published">Published</option>
-        <option value="unpublished">Unpublished</option>
-      </select>
-      <button onClick={handleAddBook} disabled={loading}>
-        {loading ? "Adding..." : "Add Book"}
-      </button>
+    <div className="min-h-[80vh] p-6 sm:p-10 bg-gray-50 dark:bg-gray-900">
+      <Toaster position="top-right" />
+      <h2 className="text-3xl font-bold text-indigo-500 mb-8 text-center">
+        Add New Book
+      </h2>
+
+      <div className="max-w-xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 flex flex-col gap-4">
+        {/* Title */}
+        <div>
+          <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">
+            Title
+          </label>
+          <input
+            type="text"
+            value={title || ""}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            placeholder="Book Title"
+          />
+        </div>
+
+        {/* Description */}
+        <div>
+          <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">
+            Description
+          </label>
+          <textarea
+            value={description || ""}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={4}
+            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            placeholder="Book Description"
+          />
+        </div>
+
+        {/* Price */}
+        <div>
+          <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">
+            Price
+          </label>
+          <input
+            type="number"
+            value={price || ""}
+            onChange={(e) => setPrice(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            placeholder="Price"
+          />
+        </div>
+
+        {/* Image URL */}
+        <div>
+          <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">
+            Image URL
+          </label>
+          <input
+            type="text"
+            value={imageUrl || ""}
+            onChange={(e) => setImageUrl(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            placeholder="Image URL"
+          />
+        </div>
+
+        {/* Preview */}
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt={title}
+            className="w-32 h-32 object-cover rounded mt-2 mx-auto"
+          />
+        )}
+
+        {/* Save Button */}
+        <button
+          onClick={handleAddBook}
+          disabled={saving}
+          className="w-full py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium mt-4 transition"
+        >
+          {saving ? "Saving..." : "Add Book"}
+        </button>
+      </div>
     </div>
   );
 };

@@ -4,6 +4,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
+// Loader Component
+const Loader = () => (
+  <div className="fixed inset-0 flex items-center justify-center bg-gray-100/70 dark:bg-gray-900/70 z-50">
+    <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
+
 const MyOrders = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -61,20 +68,26 @@ const MyOrders = () => {
     navigate(`/dashboard/payment/${order._id}`, { state: { order } });
   };
 
-  if (loading) return <p className="text-center py-10">Loading...</p>;
-  if (!orders.length) return <p className="text-center py-10">No orders found</p>;
+  if (loading) return <Loader />;
+
+  if (!orders.length)
+    return (
+      <p className="text-center py-10 text-gray-700 dark:text-gray-300">
+        No orders found
+      </p>
+    );
 
   return (
-    <div className="p-4">
+    <div className="p-4 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Toaster position="top-right" toastOptions={{ duration: 1500 }} />
 
-      <h2 className="text-2xl font-bold mb-6 text-indigo-500">
+      <h2 className="text-2xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">
         My Orders
       </h2>
 
-      {/* DESKTOP TABLE */}
-      <div className="hidden md:block overflow-x-auto">
-        <table className="min-w-full border rounded-lg table-auto">
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-x-auto rounded-lg shadow">
+        <table className="min-w-full border border-gray-300 dark:border-gray-600 table-auto">
           <thead className="bg-indigo-500 text-white">
             <tr>
               <th className="p-2 text-left">Book</th>
@@ -86,7 +99,10 @@ const MyOrders = () => {
           </thead>
           <tbody>
             {orders.map((order) => (
-              <tr key={order._id} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800">
+              <tr
+                key={order._id}
+                className="border-t hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
                 <td className="p-2 flex items-center gap-2 max-w-[200px] truncate">
                   {order.bookImage && (
                     <img
@@ -94,11 +110,17 @@ const MyOrders = () => {
                       className="w-12 h-12 rounded object-cover flex-shrink-0"
                     />
                   )}
-                  <span className="truncate">{order.bookTitle}</span>
+                  <span className="truncate text-gray-900 dark:text-gray-100">
+                    {order.bookTitle}
+                  </span>
                 </td>
-                <td className="p-2 text-center">{new Date(order.createdAt).toLocaleDateString()}</td>
-                <td className="p-2 text-center">${order.price || "N/A"}</td>
-                <td className="p-2 text-center capitalize">
+                <td className="p-2 text-center text-gray-800 dark:text-gray-200">
+                  {new Date(order.createdAt).toLocaleDateString()}
+                </td>
+                <td className="p-2 text-center text-gray-800 dark:text-gray-200">
+                  ${order.price || "N/A"}
+                </td>
+                <td className="p-2 text-center text-gray-800 dark:text-gray-200 capitalize">
                   {order.status === "cancelled"
                     ? "Cancelled"
                     : order.paymentStatus === "paid"
@@ -129,10 +151,13 @@ const MyOrders = () => {
         </table>
       </div>
 
-      {/* MOBILE CARD */}
+      {/* Mobile/Table Cards */}
       <div className="md:hidden space-y-4">
         {orders.map((order) => (
-          <div key={order._id} className="bg-white p-4 rounded-lg shadow">
+          <div
+            key={order._id}
+            className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow"
+          >
             <div className="flex items-center gap-3 mb-2">
               {order.bookImage && (
                 <img
@@ -141,15 +166,19 @@ const MyOrders = () => {
                 />
               )}
               <div className="truncate">
-                <p className="font-semibold truncate">{order.bookTitle}</p>
-                <p className="text-sm text-gray-500">
+                <p className="font-semibold truncate text-gray-900 dark:text-gray-100">
+                  {order.bookTitle}
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   {new Date(order.createdAt).toLocaleDateString()}
                 </p>
               </div>
             </div>
 
-            <p className="text-sm">Price: ${order.price}</p>
-            <p className="text-sm mb-3 capitalize">
+            <p className="text-sm text-gray-800 dark:text-gray-200">
+              Price: ${order.price}
+            </p>
+            <p className="text-sm mb-3 text-gray-800 dark:text-gray-200 capitalize">
               Status:{" "}
               {order.status === "cancelled"
                 ? "Cancelled"

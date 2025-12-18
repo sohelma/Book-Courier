@@ -1,7 +1,7 @@
-// src/context/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, googleProvider } from "../firebase.config";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -9,25 +9,36 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check user auth state
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser?.email) {
+        try {
+          // Backend থেকে role fetch
+          const res = await axios.get(`http://localhost:3000/users?email=${currentUser.email}`);
+          const userData = res.data[0] || {};
+          setUser({ email: currentUser.email, role: userData.role || "user" });
+        } catch (err) {
+          console.error(err);
+          setUser({ email: currentUser.email, role: "user" });
+        }
+        localStorage.setItem("userEmail", currentUser.email);
+      } else {
+        setUser(null);
+        localStorage.removeItem("userEmail");
+      }
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  // Google login
-  const googleLogin = () => {
-    return signInWithPopup(auth, googleProvider);
+  const googleLogin = () => signInWithPopup(auth, googleProvider);
+
+  const logout = async () => {
+    await signOut(auth);
+    localStorage.removeItem("userEmail");
+    setUser(null);
   };
-
-  // Email/Password login can be done directly in component
-
-  // Logout
-  const logout = () => signOut(auth);
 
   return (
     <AuthContext.Provider value={{ user, loading, googleLogin, logout }}>
@@ -36,5 +47,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook
 export const useAuth = () => useContext(AuthContext);

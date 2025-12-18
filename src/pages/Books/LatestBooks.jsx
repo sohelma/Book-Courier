@@ -21,7 +21,7 @@ export default function LatestBooks() {
     return <p className="text-center py-10 text-gray-500 dark:text-gray-400">No books found</p>;
 
   return (
-    <div className="min-h-screen bg-base-100 dark:bg-base-200 py-6 px-2">
+    <div className="min-h-auto bg-base-100 dark:bg-base-200 py-6 px-2">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center text-base-content dark:text-white">
           Latest Books

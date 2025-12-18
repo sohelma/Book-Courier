@@ -1,59 +1,58 @@
-// src/pages/Dashboard/MyBooks.jsx
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import { useAuth } from "../../context/AuthContext";
 
 const MyBooks = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    if (!user?.email) return;
     const fetchBooks = async () => {
+      if (!user?.email) return;
       try {
         const res = await axios.get(`http://localhost:3000/books?addedBy=${user.email}`);
         setBooks(res.data);
       } catch (err) {
         console.error(err);
-        toast.error("Failed to load books");
       }
     };
     fetchBooks();
   }, [user]);
 
-  const handleStatusToggle = async (bookId, currentStatus) => {
-    const newStatus = currentStatus === "published" ? "unpublished" : "published";
-    try {
-      await axios.patch(`http://localhost:3000/books/${bookId}`, { status: newStatus });
-      setBooks(prev => prev.map(b => b._id === bookId ? { ...b, status: newStatus } : b));
-      toast.success(`Book ${newStatus}!`);
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to update status");
-    }
-  };
+  if (!books.length) return <p className="text-center py-10">No books added yet.</p>;
 
   return (
-    <div className="p-4">
-      <Toaster />
-      <h2 className="text-2xl font-bold mb-4">My Books</h2>
-      {books.length === 0 && <p>No books found</p>}
-      <ul>
-        {books.map(book => (
-          <li key={book._id} className="flex justify-between gap-4 border p-2">
-            <span>{book.title} (${book.price})</span>
-            <div>
-              <button onClick={() => navigate(`/dashboard/edit-book/${book._id}`)}>Edit</button>
-              <button onClick={() => handleStatusToggle(book._id, book.status)}>
-                {book.status === "published" ? "Unpublish" : "Publish"}
-              </button>
+    <div className="p-6 sm:p-10 bg-gray-50 dark:bg-gray-900 min-h-[80vh]">
+      <h2 className="text-3xl font-bold text-indigo-500 mb-6 text-center">
+        My Books
+      </h2>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {books.map((book) => (
+          <div key={book._id} className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-4 flex flex-col gap-2">
+            <img
+              src={book.imageUrl || "https://via.placeholder.com/150"}
+              alt={book.title}
+              className="w-full h-40 object-cover rounded"
+            />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-200">{book.title}</h3>
+            <p className="text-gray-700 dark:text-gray-300">{book.description}</p>
+            <p className="text-gray-700 dark:text-gray-300">Price: ${book.price}</p>
+            <div className="mt-2 flex justify-between">
+              <Link
+                to={`/dashboard/edit-book/${book._id}`}
+                className="px-3 py-1 bg-indigo-500 hover:bg-indigo-600 text-white rounded"
+              >
+                Edit
+              </Link>
+              <span className={`px-3 py-1 rounded ${book.isActive ? "bg-green-500" : "bg-gray-400"} text-white`}>
+                {book.isActive ? "Published" : "Unpublished"}
+              </span>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

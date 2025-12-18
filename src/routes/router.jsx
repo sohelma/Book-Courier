@@ -20,12 +20,15 @@ import PaymentList from "../pages/Dashboard/PaymentList";
 import PaymentPage from "../pages/Dashboard/PaymentPage";
 import AddBook from "../pages/Dashboard/AddBook";
 import MyBooks from "../pages/Dashboard/MyBooks";
+import LibrarianOrders from "../pages/Dashboard/LibrarianOrders";
+import EditBook from "../pages/Dashboard/EditBook";
+import ManageBooks from "../pages/Dashboard/ManageBooks";
+import AllUsers from "../pages/Dashboard/AllUsers";
 
 
 // ✅ 404 Page
 import NotFound from "../pages/NotFound";
-import EditBook from "../pages/Dashboard/EditBook";
-import LibrarianOrders from "../pages/Dashboard/LibrarianOrders";
+
 
 
 
@@ -65,8 +68,10 @@ export const router = createBrowserRouter([
       { path: "add-book", Component: AddBook}, 
       { path: "my-books",Component: MyBooks},
       { path: "edit-book/:id", Component: EditBook },
-     
-      { path: "librarian-orders",Component: LibrarianOrders},
+      { path: "librarian-orders", Component: LibrarianOrders },
+      { path: "manage-books",Component: ManageBooks},
+      { path: "all-users", Component: AllUsers },
+
 
       // ✅ Dashboard 404 (important)
       { path: "*", Component: NotFound },

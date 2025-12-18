@@ -97,7 +97,7 @@ const MyProfile = () => {
             className="w-24 h-24 rounded-full object-cover border-2 border-indigo-500"
           />
 
-          <label className="w-full">
+          <label className="w-full text-gray-900 dark:text-gray-200">
             <span className="block mb-1 font-medium">Change Profile Image</span>
             <input
               type="file"
@@ -108,20 +108,24 @@ const MyProfile = () => {
           </label>
 
           <div className="w-full">
-            <label className="block mb-1 font-medium">Name</label>
+            <label className="block mb-1 font-medium text-gray-900 dark:text-gray-200">
+              Name
+            </label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border bg-gray-100 dark:bg-gray-700"
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
             />
           </div>
 
           <div className="w-full">
-            <label className="block mb-1 font-medium">Email</label>
+            <label className="block mb-1 font-medium text-gray-900 dark:text-gray-200">
+              Email
+            </label>
             <input
               value={user.email}
               readOnly
-              className="w-full px-4 py-2 rounded-lg border bg-gray-100 dark:bg-gray-700"
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
             />
           </div>
 

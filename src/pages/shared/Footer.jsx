@@ -1,77 +1,66 @@
 import React from "react";
 import Logo from "../../components/logo/logo";
+import { FaFacebookF, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import { SiX } from "react-icons/si"; // X logo
+import { motion } from "framer-motion";
 
 const Footer = () => {
+  const socialIcons = [
+    { icon: <SiX />, color: "hover:text-white", link: "https://x.com" },
+    { icon: <FaYoutube />, color: "hover:text-red-500", link: "#" },
+    { icon: <FaFacebookF />, color: "hover:text-blue-600", link: "#" },
+    { icon: <FaLinkedinIn />, color: "hover:text-blue-400", link: "https://linkedin.com" },
+  ];
+
   return (
-    <footer className=" dark:bg-sky-900 text-base-content p-10 mt-4 mx-auto">
-      <div className="footer sm:footer-horizontal">
-        
+    <footer className="bg-gradient-to-r from-sky-400 via-indigo-500 to-sky-300 text-white py-12 px-6">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start gap-6 text-center sm:text-left">
+
         {/* Services */}
-        <nav>
-          <h6 className="footer-title">Services</h6>
-          <a className="link link-hover">Branding</a>
-          <a className="link link-hover">Design</a>
-          <a className="link link-hover">Marketing</a>
+        <div className="flex-1 flex flex-col items-center sm:items-start">
+          <h6 className="text-lg font-bold mb-4">Services</h6>
+          <a className="link link-hover mb-2">Branding</a>
+          <a className="link link-hover mb-2">Design</a>
+          <a className="link link-hover mb-2">Marketing</a>
           <a className="link link-hover">Advertisement</a>
-        </nav>
+        </div>
 
-        {/* Company */}
-        <nav>
-          <h6 className="footer-title">Company</h6>
-          <a className="link link-hover">About us</a>
-          <a className="link link-hover">Contact</a>
-          <a className="link link-hover">Jobs</a>
-          <a className="link link-hover">Press kit</a>
-        </nav>
+        {/* Company (centered) */}
+        <div className="flex-1 flex flex-col items-center">
+          <h6 className="text-lg font-bold mb-4">Company</h6>
+          <a className="link link-hover mb-2">About Us</a>
+          <a className="link link-hover mb-2">Contact</a>
+          <a className="link link-hover mb-2">Jobs</a>
+          <a className="link link-hover">Press Kit</a>
+        </div>
 
-        {/* Social + Logo + Copyright */}
-        <nav>
-          <h6 className="footer-title">Social</h6>
-
-          {/* Social icons */}
-          <div className="grid grid-flow-col gap-4 mb-4">
-            {/* X / Twitter */}
-            <a href="https://x.com/yourprofile" target="_blank" rel="noopener noreferrer">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                <path d="M21.09 3.027a.75.75 0 0 0-.527-.234h-16.5a.75.75 0 0 0-.527 1.28l6.824 6.824-6.824 6.823a.75.75 0 1 0 1.054 1.065l6.823-6.823 6.823 6.823a.75.75 0 1 0 1.054-1.065l-6.823-6.823 6.823-6.823a.75.75 0 0 0 .234-.527z" />
-              </svg>
-            </a>
-
-            {/* YouTube */}
-            <a>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="fill-current" viewBox="0 0 24 24">
-                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
-              </svg>
-            </a>
-
-            {/* Facebook */}
-            <a>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="fill-current" viewBox="0 0 24 24">
-                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-              </svg>
-            </a>
-
-            {/* LinkedIn */}
-            <a href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="fill-current" viewBox="0 0 24 24">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.25c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.25h-3v-5.5c0-1.379-1.121-2.5-2.5-2.5s-2.5 1.121-2.5 2.5v5.5h-3v-10h3v1.391c.697-1.027 1.95-1.891 3.5-1.891 2.481 0 4.5 2.019 4.5 4.5v6z" />
-              </svg>
-            </a>
+        {/* Social + Logo */}
+        <div className="flex-1 flex flex-col items-center sm:items-end">
+          <h6 className="text-lg font-bold mb-4">Follow Us</h6>
+          <div className="flex gap-6 mb-4 text-2xl">
+            {socialIcons.map((item, index) => (
+              <motion.a
+                key={index}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`transition transform hover:-translate-y-1 ${item.color}`}
+                whileHover={{ scale: 1.3 }}
+              >
+                {item.icon}
+              </motion.a>
+            ))}
           </div>
-
-          {/* Logo */}
-          <div className="mb-3">
+          <div className="mt-6">
             <Logo />
           </div>
-        </nav>
-      </div>
-                  {/* Copyright*/}
-      <div className="container mx-auto text-center mt-8">
-          <p className="text-sm">
-            &copy; {new Date().getFullYear()} Book-Courier. All rights reserved.
-          </p>
+        </div>
       </div>
 
+      {/* Divider & Copyright */}
+      <div className="border-t border-white/30 mt-10 pt-6 text-center">
+        <p className="text-sm">&copy; {new Date().getFullYear()} Book-Courier. All rights reserved.</p>
+      </div>
     </footer>
   );
 };
