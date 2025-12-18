@@ -24,7 +24,7 @@ const PaymentPage = () => {
   const handlePayment = async () => {
     setLoading(true);
     try {
-      await axios.patch(`http://localhost:3000/orders/pay/${order._id}`, {
+      await axios.patch(`https://book-courier-server-six.vercel.app/orders/pay/${order._id}`, {
         phone: order.phone || "",
         address: order.address || "",
       });

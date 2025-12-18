@@ -10,7 +10,7 @@ const AllUsers = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("http://localhost:3000/users");
+        const res = await axios.get("https://book-courier-server-six.vercel.app/users");
         setUsers(res.data);
       } catch (err) {
         console.error(err);
@@ -24,7 +24,7 @@ const AllUsers = () => {
 
   const updateRole = async (id, role) => {
     try {
-      await axios.patch(`http://localhost:3000/users/role/${id}`, { role });
+      await axios.patch(`https://book-courier-server-six.vercel.app/users/role/${id}`, { role });
       setUsers(prev =>
         prev.map(u => (u._id === id ? { ...u, role } : u))
       );

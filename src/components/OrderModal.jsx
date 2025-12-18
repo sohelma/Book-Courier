@@ -38,7 +38,7 @@ const OrderModal = ({ visible, onClose, book }) => {
         address,
       };
 
-      const res = await axios.post("http://localhost:3000/orders", orderData);
+      const res = await axios.post("https://book-courier-server-six.vercel.app/orders", orderData);
 
       if (res.status === 200) {
         toast.success("Order placed successfully!");

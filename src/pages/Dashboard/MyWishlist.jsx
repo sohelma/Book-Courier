@@ -14,14 +14,14 @@ const MyWishlist = () => {
     if (!user) return;
 
     axios
-      .get(`http://localhost:3000/wishlist?email=${user.email}`)
+      .get(`https://book-courier-server-six.vercel.app/wishlist?email=${user.email}`)
       .then(res => setWishlist(Array.isArray(res.data) ? res.data : []))
       .catch(() => toast.error("Failed to load wishlist"));
   }, [user]);
 
   const handleRemove = async id => {
     try {
-      await axios.delete(`http://localhost:3000/wishlist/${id}`);
+      await axios.delete(`https://book-courier-server-six.vercel.app/wishlist/${id}`);
       setWishlist(prev => prev.filter(item => item._id !== id));
       toast.success("Removed from Wishlist");
     } catch (error) {

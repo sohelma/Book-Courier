@@ -18,7 +18,7 @@ const PaymentList = () => {
 
     const fetchPayments = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/payments?email=${user.email}`);
+        const res = await fetch(`https://book-courier-server-six.vercel.app/payments?email=${user.email}`);
         const data = await res.json();
         setPayments(data);
       } catch (err) {

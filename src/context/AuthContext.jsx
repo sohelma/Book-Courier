@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
       if (currentUser?.email) {
         try {
           // Backend থেকে role fetch
-          const res = await axios.get(`http://localhost:3000/users?email=${currentUser.email}`);
+          const res = await axios.get(`https://book-courier-server-six.vercel.app/users?email=${currentUser.email}`);
           const userData = res.data[0] || {};
           setUser({ email: currentUser.email, role: userData.role || "user" });
         } catch (err) {

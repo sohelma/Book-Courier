@@ -23,14 +23,14 @@ const MyOrders = () => {
     const fetchOrders = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/orders?email=${user.email}`
+          `https://book-courier-server-six.vercel.app/orders?email=${user.email}`
         );
 
         const ordersWithImage = await Promise.all(
           res.data.map(async (order) => {
             try {
               const bookRes = await axios.get(
-                `http://localhost:3000/books/${order.bookId}`
+                `https://book-courier-server-six.vercel.app/books/${order.bookId}`
               );
               return { ...order, bookImage: bookRes.data.imageUrl };
             } catch {
@@ -52,7 +52,7 @@ const MyOrders = () => {
 
   const handleCancel = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/orders/cancel/${id}`);
+      await axios.patch(`https://book-courier-server-six.vercel.app/orders/cancel/${id}`);
       setOrders((prev) =>
         prev.map((o) =>
           o._id === id ? { ...o, status: "cancelled" } : o

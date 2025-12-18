@@ -25,7 +25,7 @@ const AddBook = () => {
 
     setSaving(true);
     try {
-      const res = await axios.post("http://localhost:3000/books", {
+      const res = await axios.post("https://book-courier-server-six.vercel.app/books", {
         title: title || "",
         description: description || "",
         price: price || "",

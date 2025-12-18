@@ -21,7 +21,7 @@ const EditBook = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/books/${bookId}`);
+        const res = await axios.get(`https://book-courier-server-six.vercel.app/books/${bookId}`);
         const book = res.data;
         setTitle(book.title || "");
         setDescription(book.description || "");
@@ -46,7 +46,7 @@ const EditBook = () => {
 
     setSaving(true);
     try {
-      const res = await axios.patch(`http://localhost:3000/books/${bookId}`, {
+      const res = await axios.patch(`https://book-courier-server-six.vercel.app/books/${bookId}`, {
         title: title || "",
         description: description || "",
         price: price || "",

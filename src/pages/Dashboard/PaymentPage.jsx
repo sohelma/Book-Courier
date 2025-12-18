@@ -18,7 +18,7 @@ const PaymentPage = () => {
     if (!order) {
       const fetchOrder = async () => {
         try {
-          const res = await axios.get(`http://localhost:3000/orders/${id}`);
+          const res = await axios.get(`https://book-courier-server-six.vercel.app/orders/${id}`);
           setOrder(res.data);
         } catch (err) {
           console.error(err);
@@ -36,7 +36,7 @@ const PaymentPage = () => {
   const handlePayment = async () => {
     setLoading(true);
     try {
-      await axios.patch(`http://localhost:3000/orders/pay/${order._id}`, {
+      await axios.patch(`https://book-courier-server-six.vercel.app/orders/pay/${order._id}`, {
         phone: order.phone || "",
         address: order.address || "",
       });

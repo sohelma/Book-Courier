@@ -8,7 +8,7 @@ export default function LatestBooks() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/books/latest")
+      .get("https://book-courier-server-six.vercel.app/books/latest")
       .then((res) => setBooks(res.data))
       .catch((err) => console.error("Error fetching latest books:", err))
       .finally(() => setLoading(false));

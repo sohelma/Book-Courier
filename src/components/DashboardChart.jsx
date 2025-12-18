@@ -35,7 +35,7 @@ export const OrdersBarChart = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/orders?email=${user.email}`);
+        const res = await axios.get(`https://book-courier-server-six.vercel.app/orders?email=${user.email}`);
         setOrders(res.data);
       } catch (err) {
         console.error(err);
@@ -78,7 +78,7 @@ export const OrdersLineChart = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/orders?email=${user.email}`);
+        const res = await axios.get(`https://book-courier-server-six.vercel.app/orders?email=${user.email}`);
         setOrders(res.data);
       } catch (err) { console.error(err); }
     };
@@ -119,7 +119,7 @@ export const OrderStatusPieChart = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/orders?email=${user.email}`);
+        const res = await axios.get(`https://book-courier-server-six.vercel.app/orders?email=${user.email}`);
         setOrders(res.data);
       } catch (err) { console.error(err); }
     };

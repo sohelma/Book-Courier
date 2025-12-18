@@ -9,7 +9,7 @@ const Banner = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/banners")
+      .get("https://book-courier-server-six.vercel.app/banners")
       .then((res) => {
         const activeSlides = res.data.filter((slide) => slide.isActive);
         setSlides(activeSlides);

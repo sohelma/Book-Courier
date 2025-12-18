@@ -11,7 +11,7 @@ const MyBooks = () => {
     const fetchBooks = async () => {
       if (!user?.email) return;
       try {
-        const res = await axios.get(`http://localhost:3000/books?addedBy=${user.email}`);
+        const res = await axios.get(`https://book-courier-server-six.vercel.app/books?addedBy=${user.email}`);
         setBooks(res.data);
       } catch (err) {
         console.error(err);

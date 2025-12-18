@@ -10,7 +10,7 @@ const ManageBooks = () => {
     const fetchBooks = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("http://localhost:3000/books");
+        const res = await axios.get("https://book-courier-server-six.vercel.app/books");
         setBooks(res.data);
       } catch (err) {
         console.error(err);
@@ -27,7 +27,7 @@ const ManageBooks = () => {
       currentStatus === "published" ? "unpublished" : "published";
 
     try {
-      await axios.patch(`http://localhost:3000/books/${bookId}`, {
+      await axios.patch(`https://book-courier-server-six.vercel.app/books/${bookId}`, {
         status: newStatus,
       });
       setBooks(prev =>
@@ -51,7 +51,7 @@ const ManageBooks = () => {
       return;
 
     try {
-      await axios.patch(`http://localhost:3000/books/${bookId}`, {
+      await axios.patch(`https://book-courier-server-six.vercel.app/books/${bookId}`, {
         isActive: false,
       });
       setBooks(prev => prev.filter(b => b._id !== bookId));

@@ -16,7 +16,7 @@ const BookDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/books/${id}`)
+      .get(`https://book-courier-server-six.vercel.app/books/${id}`)
       .then(res => {
         setBook(res.data);
         setReviews(res.data.review || []);
@@ -28,7 +28,7 @@ const BookDetails = () => {
     if (!user) return toast.error("Login required");
 
     try {
-      await axios.post("http://localhost:3000/wishlist", {
+      await axios.post("https://book-courier-server-six.vercel.app/wishlist", {
         bookId: book._id,
         bookTitle: book.title,
         email: user.email,
@@ -44,7 +44,7 @@ const BookDetails = () => {
     if (!comment) return toast.error("Comment is required");
 
     try {
-      const res = await axios.post(`http://localhost:3000/books/review/${book._id}`, {
+      const res = await axios.post(`https://book-courier-server-six.vercel.app/books/review/${book._id}`, {
         email: user.email,
         name: user.displayName || "Anonymous",
         rating,

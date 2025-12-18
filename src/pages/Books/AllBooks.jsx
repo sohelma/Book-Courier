@@ -13,7 +13,7 @@
       const fetchBooks = async () => {
         try {
           setLoading(true);
-          const res = await axios.get("http://localhost:3000/books");
+          const res = await axios.get("https://book-courier-server-six.vercel.app/books");
           console.log("Books from server:", res.data); // Debug line
           setBooks(res.data);
         } catch (err) {

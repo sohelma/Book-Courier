@@ -14,7 +14,7 @@ const Invoices = () => {
       if (!user?.email) return;
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:3000/payments?email=${user.email}`);
+        const res = await axios.get(`https://book-courier-server-six.vercel.app/payments?email=${user.email}`);
         setPayments(res.data);
       } catch (err) {
         console.error(err);
