@@ -1,6 +1,6 @@
 BookCourier – Client Side
 
-🎯 Project Purpose
+ Project Purpose
 
 BookCourier client is a React-based frontend application that allows users to browse books, place orders, manage wishlist, make payments, and access role-based dashboards with a modern and responsive UI.
 
@@ -45,7 +45,7 @@ Modern dashboard with charts
 npm install
 npm run dev
 
-📦 NPM Packages
+ NPM Packages
 
 react
 
@@ -105,3 +105,17 @@ server/
 │   └── generateToken.js
 │
 └── .env
+
+Link: 
+
+https://github.com/sohelma/Book-Courier/
+
+https://github.com/sohelma/Book-Courier-server/
+
+Live: https://incomparable-tartufo-c01dd9.netlify.app/
+
+Credential:
+
+Admin Email: admin@gmail.com
+
+Admin Password: Sohel@1a
